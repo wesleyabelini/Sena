@@ -14,6 +14,22 @@ namespace Sena
     {
         Calc calc = new Calc();
         Cadastro cadastro = new Cadastro();
+
+        int[] bola1 = { };
+        int[] bola2 = { };
+        int[] bola3 = { };
+        int[] bola4 = { };
+        int[] bola5 = { };
+        int[] bola6 = { };
+
+        int[] bolaNO2 = { };
+        int[] bolaNO3 = { };
+        int[] bolaNO4 = { };
+        int[] bolaNO5 = { };
+        int[] bolaNO6 = { };
+
+        int[] bolasGeral = { };
+
         public Form1()
         {
             InitializeComponent();
@@ -21,7 +37,9 @@ namespace Sena
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            listaBolasGrid();
+            string tabela = getTabelaDB();
+
+            listaBolasGrid(tabela);
         }
 
         private void sorteioToolStripMenuItem_Click(object sender, EventArgs e)
@@ -32,28 +50,14 @@ namespace Sena
 
         private void buttonConsultar_Click(object sender, EventArgs e)
         {
-            bool apto = false;
+            listBox1.Items.Clear();
 
-            toolStripProgressBar1.Value = 0;
+            string tabela = getTabelaDB(); //pega qual tavela sera feita a consulta
 
-            if (radioButtonTodos.Checked == true || radioButtonIntervalo.Checked == true)
-            {
-                if(textBoxSorteio1.Text !="" && Convert.ToInt32(textBoxSorteio1.Text) > 0 && textBoxSorteio2.Text !="" && 
-                    Convert.ToInt32(textBoxSorteio2.Text) <= Convert.ToInt32(textBoxSorteio.Text))
-                {
-                    apto = true;
-                }
-            }
-            else if(radioButtonUltimos.Checked==true)
-            {
-                if(textBox1.Text !="" && Convert.ToInt32(textBox1.Text) > 0 && 
-                    Convert.ToInt32(textBox1.Text) <= Convert.ToInt32(textBoxSorteio.Text))
-                {
-                    apto = true;
-                }
-            }
 
-            if (apto==true)
+            //caso os requisitos de dados seja suficiente, iniciara o if ABAIXO
+
+            if (requisitosOK()==true)
             {
                 for(int bola = 1; bola <=6; bola++)
                 {
@@ -64,7 +68,7 @@ namespace Sena
                     if (radioButtonTodos.Checked==true || radioButtonIntervalo.Checked==true)
                     {
                         cmdSelectTable = @"SELECT BOLA" + bola.ToString() + ", COUNT(BOLA" + bola.ToString() + ") AS 'QNT', ((COUNT(BOLA" +
-                        bola.ToString() + ")) * 100)/" + valorFinal.ToString() + ".0 AS '%' FROM MEGASENA WHERE SORTEIO BETWEEN " +
+                        bola.ToString() + ")) * 100)/" + valorFinal.ToString() + ".0 AS '%' FROM " + tabela + " WHERE SORTEIO BETWEEN " +
                         textBoxSorteio1.Text + " AND " + valorFinal.ToString() + " GROUP BY BOLA" + bola.ToString() + " ORDER BY 'QNT' DESC";
                     }
                     else if(radioButtonUltimos.Checked==true)
@@ -72,11 +76,11 @@ namespace Sena
                         int bola1 = Convert.ToInt32(textBoxSorteio.Text) - Convert.ToInt32(textBox1.Text);
 
                         cmdSelectTable = @"SELECT BOLA" + bola.ToString() + ", COUNT(BOLA" + bola.ToString() + ") AS 'QNT', ((COUNT(BOLA" +
-                        bola.ToString() + ")) * 100)/" + textBox1.Text + ".0 AS '%' FROM MEGASENA WHERE SORTEIO BETWEEN " +
+                        bola.ToString() + ")) * 100)/" + textBox1.Text + ".0 AS '%' FROM " + tabela + " WHERE SORTEIO BETWEEN " +
                         bola1.ToString() + " AND " + valorFinal.ToString() + " GROUP BY BOLA" + bola.ToString() + " ORDER BY 'QNT' DESC";
                     }
 
-                    string cmdSelect = @"SELECT BOLA" + bola.ToString() + " FROM MEGASENA WHERE SORTEIO BETWEEN " + 
+                    string cmdSelect = @"SELECT BOLA" + bola.ToString() + " FROM " + tabela + " WHERE SORTEIO BETWEEN " + 
                         Convert.ToInt32(textBoxSorteio1.Text) + " AND " + valorFinal.ToString();
 
                     int[] valores = cadastro.returArray(cmdSelect, "BOLA" + bola.ToString());
@@ -138,25 +142,18 @@ namespace Sena
 
                 if(textBoxCalcular.Text !="" && Convert.ToInt32(textBoxCalcular.Text) > 0)
                 {
-                    getBolas();
+                    getBolas(tabela);
                 }
             }
         }
 
-        private void getBolas()
+        private void getBolas(string tabela)
         {
-            int[] bola1 = { };
-            int[] bola2 = { };
-            int[] bola3 = { };
-            int[] bola4 = { };
-            int[] bola5 = { };
-            int[] bola6 = { };
-
             int minimo = Convert.ToInt32(textBoxSorteio.Text) - Convert.ToInt32(textBoxCalcular.Text);
 
             for(int i=1; i<=6; i++)
             {
-                string cmdSelect = @"SELECT BOLA" + i + " FROM MEGASENA WHERE SORTEIO BETWEEN " + minimo.ToString() + " AND " + 
+                string cmdSelect = @"SELECT BOLA" + i + " FROM " + tabela + " WHERE SORTEIO BETWEEN " + minimo.ToString() + " AND " + 
                     textBoxSorteio.Text;
 
                 if (i==1)
@@ -195,12 +192,12 @@ namespace Sena
 
             int[] geral = list.ToArray();
 
-            textBoxMA1.Text = mediaAritmeticaporCento(minimo, bola1, "BOLA1", dataGridViewBola1).ToString();
-            textBoxMA2.Text = mediaAritmeticaporCento(minimo, bola2, "BOLA2", dataGridViewBola2).ToString();
-            textBoxMA3.Text = mediaAritmeticaporCento(minimo, bola3, "BOLA3", dataGridViewBola3).ToString();
-            textBoxMA4.Text = mediaAritmeticaporCento(minimo, bola4, "BOLA4", dataGridViewBola4).ToString();
-            textBoxMA5.Text = mediaAritmeticaporCento(minimo, bola5, "BOLA5", dataGridViewBola5).ToString();
-            textBoxMA6.Text = mediaAritmeticaporCento(minimo, bola6, "BOLA6", dataGridViewBola6).ToString();
+            textBoxMA1.Text = mediaAritmeticaporCento(minimo, bola1, "BOLA1", dataGridViewBola1, tabela).ToString();
+            textBoxMA2.Text = mediaAritmeticaporCento(minimo, bola2, "BOLA2", dataGridViewBola2, tabela).ToString();
+            textBoxMA3.Text = mediaAritmeticaporCento(minimo, bola3, "BOLA3", dataGridViewBola3, tabela).ToString();
+            textBoxMA4.Text = mediaAritmeticaporCento(minimo, bola4, "BOLA4", dataGridViewBola4, tabela).ToString();
+            textBoxMA5.Text = mediaAritmeticaporCento(minimo, bola5, "BOLA5", dataGridViewBola5, tabela).ToString();
+            textBoxMA6.Text = mediaAritmeticaporCento(minimo, bola6, "BOLA6", dataGridViewBola6, tabela).ToString();
 
             textBoxMAGeral.Text = mediaAritmeticaGeral(geral, dataGridViewGeral).ToString();
 
@@ -220,15 +217,77 @@ namespace Sena
             textBoxDPGeral.Text = Math.Sqrt(calc.varianciaDouble(arrayPorcento(geral, dataGridViewGeral), 
                 Convert.ToDouble(textBoxMAGeral.Text))).ToString();
 
-            textBoxB1.Text = bolasFuturas(dataGridViewBola1, textBoxMA1, textBoxDP1);
-            textBoxB2.Text = bolasFuturas(dataGridViewBola2, textBoxMA2, textBoxDP2);
-            textBoxB3.Text = bolasFuturas(dataGridViewBola3, textBoxMA3, textBoxDP3);
-            textBoxB4.Text = bolasFuturas(dataGridViewBola4, textBoxMA4, textBoxDP4);
-            textBoxB5.Text = bolasFuturas(dataGridViewBola5, textBoxMA5, textBoxDP5);
-            textBoxB6.Text = bolasFuturas(dataGridViewBola6, textBoxMA6, textBoxDP6);
+            bola1 = null;
+            bola2 = null;
+            bola3 = null;
+            bola4 = null;
+            bola5 = null;
+            bola6 = null;
 
-            textBoxBG.Text = bolasFuturas(dataGridViewGeral, textBoxMAGeral, textBoxDPGeral);
+            bola1 = bolasFuturas(dataGridViewBola1, textBoxMA1, textBoxDP1);
+            bola2 = bolasFuturas(dataGridViewBola2, textBoxMA2, textBoxDP2);
+            bola3 = bolasFuturas(dataGridViewBola3, textBoxMA3, textBoxDP3);
+            bola4 = bolasFuturas(dataGridViewBola4, textBoxMA4, textBoxDP4);
+            bola5 = bolasFuturas(dataGridViewBola5, textBoxMA5, textBoxDP5);
+            bola6 = bolasFuturas(dataGridViewBola6, textBoxMA6, textBoxDP6);
 
+            bolasGeral = bolasFuturas(dataGridViewGeral, textBoxMAGeral, textBoxDPGeral);
+
+            bolaNO2 = removeDuplicado(bola1, bola2);
+            bolaNO3 = removeDuplicado(bola1, bola3);
+            bolaNO3 = removeDuplicado(bola2, bolaNO3);
+            bolaNO4 = removeDuplicado(bola1, bola4);
+            bolaNO4 = removeDuplicado(bola2, bolaNO4);
+            bolaNO4 = removeDuplicado(bola3, bolaNO4);
+            bolaNO5 = removeDuplicado(bola1, bola5);
+            bolaNO5 = removeDuplicado(bola2, bolaNO5);
+            bolaNO5 = removeDuplicado(bola3, bolaNO5);
+            bolaNO5 = removeDuplicado(bola4, bolaNO5);
+            bolaNO6 = removeDuplicado(bola1, bola5);
+            bolaNO6 = removeDuplicado(bola2, bolaNO6);
+            bolaNO6 = removeDuplicado(bola3, bolaNO6);
+            bolaNO6 = removeDuplicado(bola4, bolaNO6);
+            bolaNO6 = removeDuplicado(bola5, bolaNO6);
+
+            List<int> todasBolasFuturas = new List<int>();
+            todasBolasFuturas.AddRange(bola1);
+            todasBolasFuturas.AddRange(bola2);
+            todasBolasFuturas.AddRange(bola3);
+            todasBolasFuturas.AddRange(bola4);
+            todasBolasFuturas.AddRange(bola5);
+            todasBolasFuturas.AddRange(bola6);
+
+            todasBolasFuturas.AddRange(bolasGeral);
+
+            int[] contarValores = contarValoresA(todasBolasFuturas);
+
+            for(int i=1; i < contarValores.Length; i++)
+            {
+                listBox1.Items.Add((i).ToString() + " = " + contarValores[i].ToString());
+            }
+
+            if(checkBoxRepetidos.Checked==true)
+            {
+                textBoxB1.Text = listToString(bola1);
+                textBoxB2.Text = listToString(bola2);
+                textBoxB3.Text = listToString(bola3);
+                textBoxB4.Text = listToString(bola4);
+                textBoxB5.Text = listToString(bola5);
+                textBoxB6.Text = listToString(bola6);
+
+                textBoxBG.Text = listToString(bolasGeral);
+            }
+            else if(checkBoxRepetidos.Checked==false)
+            {
+                textBoxB1.Text = listToString(bola1);
+                textBoxB2.Text = listToString(bolaNO2);
+                textBoxB3.Text = listToString(bolaNO3);
+                textBoxB4.Text = listToString(bolaNO4);
+                textBoxB5.Text = listToString(bolaNO5);
+                textBoxB6.Text = listToString(bolaNO6);
+
+                textBoxBG.Text = listToString(bolasGeral);
+            }
 
             toolStripProgressBar1.Value = 100;
 
@@ -236,8 +295,81 @@ namespace Sena
             timer1.Start();
         }
 
+        private int[] removeDuplicado(int[] bola1, int[] bola2)
+        {
+            List<int> bolaA1 = new List<int>();
+            List<int> bolaA2 = new List<int>();
+
+            bolaA1.AddRange(bola1);
+            bolaA2.AddRange(bola2);
+
+
+            for (int i = 0; i < bola1.Length; i++)
+            {
+                int j = 0;
+                int k = bolaA2.Count - 1;
+
+                if(k < 0)
+                {
+                    k++;
+                }
+
+                if(k > 0)
+                {
+                    while (bola1[i] != bolaA2[j] && j < k)
+                    {
+                        j++;
+                    }
+
+                    if (bola1[i] == bolaA2[j])
+                    {
+                        bolaA2.RemoveAt(j);
+                    }
+                }
+            }
+
+            bola2 = bolaA2.ToArray();
+            return bola2;
+        }
+
+        private string listToString(int[] bolas)
+        {
+            //CONVERTE A LISTA ARRAYS INTEIROS EM STRING
+
+            string listaBolas = "";
+
+            for(int i=0; i < bolas.Length; i++)
+            {
+                listaBolas += bolas[i].ToString() + " ";
+            }
+
+            return listaBolas;
+        }
+
+        private int[] contarValoresA(List<int> list)
+        {
+            //REALIZA A CONTAGEM DA QUANTIDADE QUE DETERMINADO VALOR PODE SAIR DE ACORDO COM A ESTIMATIVA
+
+            int[] contagem = new int[61];
+
+            for(int i=0; i < list.Count; i++)
+            {
+
+                contagem[list[i]] += 1;
+            }
+
+            return contagem;
+        }
+
         private double mediaAritmeticaGeral(int[] bolasGeral, DataGridView datagrid)
         {
+            /*calculo da media aritmetica dos sorteios geral.
+             * 
+             * OBS: O SORTEIO GERAL APENAS UTILIZA OS DADOS DE TODOS OS SORTEIOS JA REALIZADOS. 
+             * NÃO CORRE OS DADOS EM HISTORICO
+             * 
+             * */
+
             double mediaAritmetica = 0;
 
             for(int i = 0; i < bolasGeral.Length; i++)
@@ -260,28 +392,33 @@ namespace Sena
             return mediaAritmetica;
         }
 
-        private string bolasFuturas(DataGridView datagrid, TextBox mAritmetica, TextBox dPadrao)
+        private int[] bolasFuturas(DataGridView datagrid, TextBox mAritmetica, TextBox dPadrao)
         {
+            // preenche um array com as bolas onde os dados de % estejam dentro das estimativas de min e max
+
             double vMinimo = Convert.ToDouble(mAritmetica.Text) - Convert.ToDouble(dPadrao.Text);
             double vMaximo = Convert.ToDouble(mAritmetica.Text) + Convert.ToDouble(dPadrao.Text);
 
-            string bola = "";
+            List<int> list = new List<int>();
+
+            int[] bola = { };
 
             for(int i = 0; i < datagrid.RowCount - 1; i++)
             {
                 if(Convert.ToDouble(datagrid.Rows[i].Cells[2].Value.ToString()) >= vMinimo && 
                     Convert.ToDouble(datagrid.Rows[i].Cells[2].Value.ToString()) <= vMaximo)
                 {
-                    bola += datagrid.Rows[i].Cells[0].Value.ToString();
-                    bola += " ";
+                    list.Add(Convert.ToInt32(datagrid.Rows[i].Cells[0].Value.ToString()));
                 }
             }
-
+            bola = list.ToArray();
             return bola;
         }
 
         private double[] arrayPorcento(int[] bola, DataGridView datagrid)
         {
+            //cria um array de porcentagens na saido dos dados
+
             double[] porcento = { };
 
             List<double> list = new List<double>();
@@ -306,11 +443,13 @@ namespace Sena
             return porcento;
         }
 
-        public double mediaAritmeticaporCento(int minimo, int[] bola, string tabela, DataGridView datagrid)
+        public double mediaAritmeticaporCento(int minimo, int[] bola, string tabela, DataGridView datagrid, string tabelas)
         {
             double mediaAritmetica = 0;
+
+
             double barraUnit = 16.6666667 / bola.Length;
-            double barra = 0;
+            double barra = 0; //barra de progresso
             int cont = 1;
 
             for (int i = 0; i < bola.Length; i++)
@@ -330,7 +469,7 @@ namespace Sena
                 minimo++;
 
                 string cmdSelectTable = @"SELECT " + tabela + ", COUNT(" + tabela + ") AS 'QNT', ((COUNT(" + tabela + ")) * 100)/" + 
-                    minimo.ToString() + ".0 AS '%' FROM MEGASENA WHERE SORTEIO BETWEEN " + textBoxSorteio1.Text + " AND " + 
+                    minimo.ToString() + ".0 AS '%' FROM " + tabelas + " WHERE SORTEIO BETWEEN " + textBoxSorteio1.Text + " AND " + 
                     minimo.ToString() + " GROUP BY " + tabela + " ORDER BY 'QNT' DESC";
 
                 cadastro.listdatagrid(cmdSelectTable, datagrid);
@@ -348,13 +487,16 @@ namespace Sena
             return mediaAritmetica;
         }
 
-        private void listaBolasGrid()
+        private void listaBolasGrid(string tabela)
         {
-            string sorteios = cadastro.returnString(@"SELECT COUNT(SORTEIO) AS QNT FROM MEGASENA");
+            string sorteios = cadastro.returnString(@"SELECT COUNT(SORTEIO) AS QNT FROM " + tabela + "", "QNT");
             textBoxSorteio.Text = sorteios;
 
             string cmdSelect = @"SELECT TEM.BOLA, COUNT(BOLA) AS QNT, ((COUNT(BOLA) * 100) / " + sorteios + 
-                ".) AS '%' FROM (SELECT BOLA1 AS BOLA FROM MEGASENA UNION ALL SELECT BOLA2 AS BOLA FROM MEGASENA UNION ALL SELECT BOLA3 AS BOLA FROM MEGASENA UNION ALL SELECT BOLA4 AS BOLA FROM MEGASENA UNION ALL SELECT BOLA5 AS BOLA FROM MEGASENA UNION ALL SELECT BOLA6 AS BOLA FROM MEGASENA) AS TEM GROUP BY BOLA ORDER BY QNT DESC";
+                ".) AS '%' FROM (SELECT BOLA1 AS BOLA FROM " + tabela + " UNION ALL SELECT BOLA2 AS BOLA FROM " + tabela + 
+                " UNION ALL SELECT BOLA3 AS BOLA FROM " + tabela + " UNION ALL SELECT BOLA4 AS BOLA FROM " + tabela + 
+                " UNION ALL SELECT BOLA5 AS BOLA FROM " + tabela + " UNION ALL SELECT BOLA6 AS BOLA FROM " + tabela + 
+                ") AS TEM GROUP BY BOLA ORDER BY QNT DESC";
 
             cadastro.listdatagrid(cmdSelect, dataGridViewGeral);
 
@@ -389,36 +531,79 @@ namespace Sena
             groupBox9.Enabled = false;
         }
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox6_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox4_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox7_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox3_Enter(object sender, EventArgs e)
-        {
-
-        }
-
         private void timer1_Tick(object sender, EventArgs e)
         {
             toolStripProgressBar1.Value = 0;
             timer1.Stop();
             timer1.Enabled = false;
+        }
+
+        private bool requisitosOK()
+        {
+            bool apto = false;
+
+            toolStripProgressBar1.Value = 0;
+
+            if (radioButtonTodos.Checked == true || radioButtonIntervalo.Checked == true)
+            {
+                if (textBoxSorteio1.Text != "" && Convert.ToInt32(textBoxSorteio1.Text) > 0 && textBoxSorteio2.Text != "" &&
+                    Convert.ToInt32(textBoxSorteio2.Text) <= Convert.ToInt32(textBoxSorteio.Text))
+                {
+                    apto = true;
+                }
+            }
+            else if (radioButtonUltimos.Checked == true)
+            {
+                if (textBox1.Text != "" && Convert.ToInt32(textBox1.Text) > 0 &&
+                    Convert.ToInt32(textBox1.Text) <= Convert.ToInt32(textBoxSorteio.Text))
+                {
+                    apto = true;
+                }
+            }
+
+            return apto;
+        }
+
+        private string getTabelaDB()
+        {
+            string tabela = "";
+
+            if (radioButtonDB1.Checked == true)
+            {
+                tabela = "MEGASENA";
+            }
+            else if (radioButtonDB2.Checked == true)
+            {
+                tabela = "MEGASENA2";
+            }
+
+            return tabela;
+        }
+
+        private void checkBoxRepetidos_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxRepetidos.Checked == true)
+            {
+                textBoxB1.Text = listToString(bola1);
+                textBoxB2.Text = listToString(bola2);
+                textBoxB3.Text = listToString(bola3);
+                textBoxB4.Text = listToString(bola4);
+                textBoxB5.Text = listToString(bola5);
+                textBoxB6.Text = listToString(bola6);
+
+                textBoxBG.Text = listToString(bolasGeral);
+            }
+            else if (checkBoxRepetidos.Checked == false)
+            {
+                textBoxB1.Text = listToString(bola1);
+                textBoxB2.Text = listToString(bolaNO2);
+                textBoxB3.Text = listToString(bolaNO3);
+                textBoxB4.Text = listToString(bolaNO4);
+                textBoxB5.Text = listToString(bolaNO5);
+                textBoxB6.Text = listToString(bolaNO6);
+
+                textBoxBG.Text = listToString(bolasGeral);
+            }
         }
     }
 }

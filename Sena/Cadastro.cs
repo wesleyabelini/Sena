@@ -34,7 +34,7 @@ namespace Sena
             }
         }
 
-        public string returnString(string comando)
+        public string returnString(string comando, string tabela)
         {
             string valor = "";
 
@@ -50,7 +50,7 @@ namespace Sena
 
                 while(reader.Read())
                 {
-                    valor = reader["QNT"].ToString();
+                    valor = reader[tabela].ToString();
                 }
 
                 conexao.Close();

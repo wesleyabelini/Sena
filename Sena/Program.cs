@@ -16,7 +16,15 @@ namespace Sena
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+            using (FormLogin login = new FormLogin())
+            {
+                if(login.ShowDialog() == DialogResult.OK)
+                {
+                    login.Close();
+                    Application.Run(new Form1());
+                }
+            } 
         }
     }
 }
