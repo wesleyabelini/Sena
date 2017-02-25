@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Globalization;
 
 namespace Sena
 {
@@ -17,6 +18,8 @@ namespace Sena
         {
             InitializeComponent();
             horaAtual(maskedTextBox1);
+
+            MessageBox.Show("Realize o cadastramento na ordem de saíde de bolas no sorteio", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void buttonCadastrar_Click(object sender, EventArgs e)
@@ -25,17 +28,22 @@ namespace Sena
             {
                 string returnUltimoDado = cadastro.returnString(@"SELECT COUNT(SORTEIO) AS 'SORTEIO' FROM MEGASENA;", "SORTEIO");
 
-                string data = Convert.ToDateTime(maskedTextBox1.Text).ToString("dd/MM/yyyy");
+                DateTime data = DateTime.Parse(maskedTextBox1.Text, new CultureInfo("en-GB"));
                 int soma = Convert.ToInt32(returnUltimoDado) + 1;
 
-                cadastroMegasena(soma, data);
-                cadastroMegasena2(soma, data);
+                cadastroMegasena(soma, data.ToString());
+                cadastroMegasena2(soma, data.ToString());
+
+                clean();
             }
         }
 
         private void cadastroMegasena(int soma, string data)
         {
-            //Cadastro no primeiro banco de dados >> ATENÇÃO, ANTES DE EXECUTAR VERIFICAR OS NOMES DO RESPECTIVOS BANCOS
+            /*Para realizar este cadastro é realizado um ordenamento de bolas do menor para o maior
+             * */
+
+            ordenarBolas();
 
             string insertCadastro = @"INSERT INTO MEGASENA VALUES(" + soma + ", '" + data + "', " + Convert.ToInt32(textBox1.Text) +
                     ", " + Convert.ToInt32(textBox2.Text) + ", " + Convert.ToInt32(textBox3.Text) + ", " + Convert.ToInt32(textBox4.Text) +
@@ -46,10 +54,6 @@ namespace Sena
 
         private void cadastroMegasena2(int soma, string data)
         {
-            //Cadastro no primeiro banco de dados >> ATENÇÃO, ANTES DE EXECUTAR VERIFICAR OS NOMES DO RESPECTIVOS BANCOS
-
-            ordenarBolas();
-
             string insertCadastro = @"INSERT INTO MEGASENA2 VALUES(" + soma + ", '" + data + "', " + Convert.ToInt32(textBox1.Text) +
                     ", " + Convert.ToInt32(textBox2.Text) + ", " + Convert.ToInt32(textBox3.Text) + ", " + Convert.ToInt32(textBox4.Text) +
                     ", " + Convert.ToInt32(textBox5.Text) + ", " + Convert.ToInt32(textBox6.Text) + ");";
@@ -68,30 +72,32 @@ namespace Sena
             bolas.Add(Convert.ToInt16(textBox5.Text));
             bolas.Add(Convert.ToInt16(textBox6.Text));
 
-            int[] bolasOrdem = { };
-            bolasOrdem[0] = 60;
+            int[] bolasOrdem = { 0, 60, 60, 60, 60, 60, 60 };
 
-            int j = 0;
-
-            for (int i = 0; i < 6; i++)
+            for (int i = 1; i < 7; i++)
             {
-                while (j < 6)
+                int j = 0;
+
+                while(j < 6)
                 {
-                    if (bolasOrdem[i] > bolas[j])
+                    int a = bolasOrdem[i];
+                    int b = bolasOrdem[i - 1];
+                    int c = bolas[j];
+
+                    if (bolasOrdem[i] > bolas[j] && bolasOrdem[i -1] < bolas[j])
                     {
                         bolasOrdem[i] = bolas[j];
-                        j++;
                     }
+                    j++;
                 }
-
             }
 
-            textBox1.Text = bolasOrdem[0].ToString();
-            textBox2.Text = bolasOrdem[1].ToString();
-            textBox3.Text = bolasOrdem[2].ToString();
-            textBox4.Text = bolasOrdem[3].ToString();
-            textBox5.Text = bolasOrdem[4].ToString();
-            textBox6.Text = bolasOrdem[5].ToString();
+            textBox1.Text = bolasOrdem[1].ToString();
+            textBox2.Text = bolasOrdem[2].ToString();
+            textBox3.Text = bolasOrdem[3].ToString();
+            textBox4.Text = bolasOrdem[4].ToString();
+            textBox5.Text = bolasOrdem[5].ToString();
+            textBox6.Text = bolasOrdem[6].ToString();
         }
 
         private void horaAtual(MaskedTextBox mask)
@@ -155,21 +161,28 @@ namespace Sena
             lista.Add(Convert.ToInt16(textBox5.Text));
             lista.Add(Convert.ToInt16(textBox6.Text));
 
-            int j = 1;
             for(int i = 0; i < lista.Count; i++)
             {
-                while(lista[i] != lista[j])
+                for(int j= i + 1; j < 6; j++)
                 {
-                    j++;
-                }
-
-                if(lista[i] == lista[j])
-                {
-                    igual = false;
+                    if(lista[i]==lista[j])
+                    {
+                        igual = false;
+                    }
                 }
             }
 
             return igual;
+        }
+
+        private void clean()
+        {
+            textBox1.Clear();
+            textBox2.Clear();
+            textBox3.Clear();
+            textBox4.Clear();
+            textBox5.Clear();
+            textBox6.Clear();
         }
     }
 }

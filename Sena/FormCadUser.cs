@@ -22,7 +22,7 @@ namespace Sena
 
         private void buttonCadastro_Click(object sender, EventArgs e)
         {
-            if(textBoxLogin.Text != "" && textBoxSenha.Text !="")
+            if(textBoxLogin.Text != "" && textBoxSenha.Text !="" && textBoxSenha.Text == textBoxRepSenha.Text)
             {
                 string verifUnique = @"SELECT USUARIO FROM USUARIO WHERE USUARIO ='" + textBoxLogin.Text + "';";
 
@@ -39,7 +39,7 @@ namespace Sena
                     string id = cadastro.returnString("SELECT COUNT(USUARIO) AS 'CONT' FROM USUARIO;", "CONT");
                     id = (Convert.ToInt16(id) + 1).ToString();
 
-                    string cadUser = @"INSERT INTO USUARIO VALUES(" + id + " , " + textBoxLogin.Text + " , " + hash + " , " + admin + ");";
+                    string cadUser = @"INSERT INTO USUARIO VALUES(" + id + " , '" + textBoxLogin.Text + "' , '" + hash + "' , " + Convert.ToInt16(admin) + ");";
 
                     cadastro.cadastro(cadUser);
 
@@ -48,15 +48,18 @@ namespace Sena
                 else
                 {
                     clean();
-                    MessageBox.Show("Usuário já cadastrado no Sistema.", "Usuário", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Usuário já cadastrado no Sistema ou senhas não conferem.", "Usuário", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
+
+            this.Close();
         }
 
         private void clean()
         {
             textBoxLogin.Clear();
             textBoxSenha.Clear();
+            textBoxRepSenha.Clear();
         }
     }
 }
