@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLogin));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.textBoxlogin = new System.Windows.Forms.TextBox();
             this.textBoxsenha = new System.Windows.Forms.TextBox();
@@ -42,30 +43,32 @@
             this.pictureBox1.Image = global::Sena.Properties.Resources.megasena;
             this.pictureBox1.Location = new System.Drawing.Point(12, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(223, 209);
+            this.pictureBox1.Size = new System.Drawing.Size(190, 171);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
             // textBoxlogin
             // 
-            this.textBoxlogin.Location = new System.Drawing.Point(141, 72);
+            this.textBoxlogin.Location = new System.Drawing.Point(141, 50);
             this.textBoxlogin.Name = "textBoxlogin";
-            this.textBoxlogin.Size = new System.Drawing.Size(183, 20);
+            this.textBoxlogin.Size = new System.Drawing.Size(128, 20);
             this.textBoxlogin.TabIndex = 1;
             // 
             // textBoxsenha
             // 
-            this.textBoxsenha.Location = new System.Drawing.Point(141, 119);
+            this.textBoxsenha.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxsenha.Location = new System.Drawing.Point(141, 97);
             this.textBoxsenha.Name = "textBoxsenha";
-            this.textBoxsenha.Size = new System.Drawing.Size(183, 20);
+            this.textBoxsenha.PasswordChar = '*';
+            this.textBoxsenha.Size = new System.Drawing.Size(128, 23);
             this.textBoxsenha.TabIndex = 2;
             // 
             // buttonLogin
             // 
-            this.buttonLogin.Location = new System.Drawing.Point(241, 188);
+            this.buttonLogin.Location = new System.Drawing.Point(208, 151);
             this.buttonLogin.Name = "buttonLogin";
-            this.buttonLogin.Size = new System.Drawing.Size(83, 33);
+            this.buttonLogin.Size = new System.Drawing.Size(63, 32);
             this.buttonLogin.TabIndex = 3;
             this.buttonLogin.Text = "Login";
             this.buttonLogin.UseVisualStyleBackColor = true;
@@ -75,7 +78,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(139, 56);
+            this.label1.Location = new System.Drawing.Point(139, 34);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(38, 13);
             this.label1.TabIndex = 4;
@@ -85,7 +88,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(139, 103);
+            this.label2.Location = new System.Drawing.Point(139, 81);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(43, 13);
             this.label2.TabIndex = 5;
@@ -95,13 +98,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(336, 233);
+            this.ClientSize = new System.Drawing.Size(283, 195);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonLogin);
             this.Controls.Add(this.textBoxsenha);
             this.Controls.Add(this.textBoxlogin);
             this.Controls.Add(this.pictureBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormLogin";

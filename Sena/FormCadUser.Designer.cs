@@ -28,12 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCadUser));
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxLogin = new System.Windows.Forms.TextBox();
             this.textBoxSenha = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.checkBoxAdmin = new System.Windows.Forms.CheckBox();
             this.buttonCadastro = new System.Windows.Forms.Button();
+            this.textBoxRepSenha = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -54,9 +57,11 @@
             // 
             // textBoxSenha
             // 
+            this.textBoxSenha.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxSenha.Location = new System.Drawing.Point(15, 66);
             this.textBoxSenha.Name = "textBoxSenha";
-            this.textBoxSenha.Size = new System.Drawing.Size(163, 20);
+            this.textBoxSenha.PasswordChar = '*';
+            this.textBoxSenha.Size = new System.Drawing.Size(163, 23);
             this.textBoxSenha.TabIndex = 3;
             // 
             // label2
@@ -71,34 +76,55 @@
             // checkBoxAdmin
             // 
             this.checkBoxAdmin.AutoSize = true;
-            this.checkBoxAdmin.Location = new System.Drawing.Point(15, 106);
+            this.checkBoxAdmin.Location = new System.Drawing.Point(15, 150);
             this.checkBoxAdmin.Name = "checkBoxAdmin";
             this.checkBoxAdmin.Size = new System.Drawing.Size(55, 17);
-            this.checkBoxAdmin.TabIndex = 4;
+            this.checkBoxAdmin.TabIndex = 5;
             this.checkBoxAdmin.Text = "Admin";
             this.checkBoxAdmin.UseVisualStyleBackColor = true;
             // 
             // buttonCadastro
             // 
-            this.buttonCadastro.Location = new System.Drawing.Point(58, 142);
+            this.buttonCadastro.Location = new System.Drawing.Point(58, 186);
             this.buttonCadastro.Name = "buttonCadastro";
             this.buttonCadastro.Size = new System.Drawing.Size(77, 24);
-            this.buttonCadastro.TabIndex = 5;
+            this.buttonCadastro.TabIndex = 6;
             this.buttonCadastro.Text = "Cadastrar";
             this.buttonCadastro.UseVisualStyleBackColor = true;
             this.buttonCadastro.Click += new System.EventHandler(this.buttonCadastro_Click);
+            // 
+            // textBoxRepSenha
+            // 
+            this.textBoxRepSenha.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxRepSenha.Location = new System.Drawing.Point(15, 112);
+            this.textBoxRepSenha.Name = "textBoxRepSenha";
+            this.textBoxRepSenha.PasswordChar = '*';
+            this.textBoxRepSenha.Size = new System.Drawing.Size(163, 23);
+            this.textBoxRepSenha.TabIndex = 4;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 96);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(75, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Repetir Senha";
             // 
             // FormCadUser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(195, 178);
+            this.ClientSize = new System.Drawing.Size(195, 222);
+            this.Controls.Add(this.textBoxRepSenha);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.buttonCadastro);
             this.Controls.Add(this.checkBoxAdmin);
             this.Controls.Add(this.textBoxSenha);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBoxLogin);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormCadUser";
@@ -117,5 +143,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox checkBoxAdmin;
         private System.Windows.Forms.Button buttonCadastro;
+        private System.Windows.Forms.TextBox textBoxRepSenha;
+        private System.Windows.Forms.Label label3;
     }
 }
