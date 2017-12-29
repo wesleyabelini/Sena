@@ -1,11 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sena", "Sena\Sena.csproj", "{4EAD868F-9944-42CD-BCB0-5C3CEB639977}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{02E7C4C7-EE30-409F-82E9-3E0418D1A633}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBCreateSena", "DBCreateSena\DBCreateSena.csproj", "{8801F108-E9A3-43A8-9288-55B534D972BD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{922F1A56-DE86-4289-895E-8951F09CCD53}"
+	ProjectSection(SolutionItems) = preProject
+		megasena.xlsx = megasena.xlsx
+		sena.mdf = sena.mdf
+		sena_log.ldf = sena_log.ldf
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,8 +28,15 @@ Global
 		{4EAD868F-9944-42CD-BCB0-5C3CEB639977}.Release|Any CPU.Build.0 = Release|Any CPU
 		{02E7C4C7-EE30-409F-82E9-3E0418D1A633}.Debug|Any CPU.ActiveCfg = Debug
 		{02E7C4C7-EE30-409F-82E9-3E0418D1A633}.Release|Any CPU.ActiveCfg = Release
+		{8801F108-E9A3-43A8-9288-55B534D972BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8801F108-E9A3-43A8-9288-55B534D972BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8801F108-E9A3-43A8-9288-55B534D972BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8801F108-E9A3-43A8-9288-55B534D972BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {821F6147-3D30-4885-938C-0D51D2ACFB38}
 	EndGlobalSection
 EndGlobal

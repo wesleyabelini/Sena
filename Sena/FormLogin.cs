@@ -23,27 +23,30 @@ namespace Sena
 
         private void buttonLogin_Click(object sender, EventArgs e)
         {
-            string hash = criptografia.newHash(textBoxsenha);
+            //string hash = criptografia.newHash(textBoxsenha);
 
-            string selectUser = @"SELECT ISADMIN FROM USUARIO WHERE USUARIO ='" + textBoxlogin.Text + "' AND SENHA ='" + hash + "';";
-            string preLogin = cadastro.returnString(selectUser, "ISADMIN");
+            //string selectUser = @"SELECT ISADMIN FROM USUARIO WHERE USUARIO ='" + textBoxlogin.Text + "' AND SENHA ='" + hash + "';";
+            //string preLogin = cadastro.returnString(selectUser, "ISADMIN");
 
-            if(preLogin =="")
-            {
-                clean();
-                MessageBox.Show("Usuario não existente", "Usuário", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else if(preLogin == "False")
-            {
-                clean();
-                this.DialogResult = DialogResult.OK;
-            }
-            else if(preLogin=="True")
-            {
-                clean();
-                FormCadUser cadUser = new FormCadUser();
-                cadUser.Show();
-            }
+            //if(preLogin =="")
+            //{
+            //    clean();
+            //    MessageBox.Show("Usuario não existente", "Usuário", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //}
+            //else if(preLogin == "False")
+            //{
+            //    clean();
+            //    this.DialogResult = DialogResult.OK;
+            //}
+            //else if(preLogin=="True")
+            //{
+            //    clean();
+            //    FormCadUser cadUser = new FormCadUser();
+            //    cadUser.Show();
+            //}
+
+            clean();
+            this.DialogResult = DialogResult.OK;
         }
 
         private void clean()

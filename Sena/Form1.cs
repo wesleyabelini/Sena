@@ -68,19 +68,19 @@ namespace Sena
                     if (radioButtonTodos.Checked==true || radioButtonIntervalo.Checked==true)
                     {
                         cmdSelectTable = @"SELECT BOLA" + bola.ToString() + ", COUNT(BOLA" + bola.ToString() + ") AS 'QNT', ((COUNT(BOLA" +
-                        bola.ToString() + ")) * 100)/" + valorFinal.ToString() + ".0 AS '%' FROM " + tabela + " WHERE SORTEIO BETWEEN " +
+                        bola.ToString() + ")) * 100)/" + valorFinal.ToString() + ".0 AS '%' FROM " + tabela + " WHERE SORTEIOID BETWEEN " +
                         textBoxSorteio1.Text + " AND " + valorFinal.ToString() + " GROUP BY BOLA" + bola.ToString() + " ORDER BY 'QNT' DESC";
                     }
-                    else if(radioButtonUltimos.Checked==true)
-                    {
-                        int bola1 = Convert.ToInt32(textBoxSorteio.Text) - Convert.ToInt32(textBox1.Text);
+                    //else if(radioButtonUltimos.Checked==true)
+                    //{
+                    //    int bola1 = Convert.ToInt32(textBoxSorteio.Text) - Convert.ToInt32(textBox1.Text);
 
-                        cmdSelectTable = @"SELECT BOLA" + bola.ToString() + ", COUNT(BOLA" + bola.ToString() + ") AS 'QNT', ((COUNT(BOLA" +
-                        bola.ToString() + ")) * 100)/" + textBox1.Text + ".0 AS '%' FROM " + tabela + " WHERE SORTEIO BETWEEN " +
-                        bola1.ToString() + " AND " + valorFinal.ToString() + " GROUP BY BOLA" + bola.ToString() + " ORDER BY 'QNT' DESC";
-                    }
+                    //    cmdSelectTable = @"SELECT BOLA" + bola.ToString() + ", COUNT(BOLA" + bola.ToString() + ") AS 'QNT', ((COUNT(BOLA" +
+                    //    bola.ToString() + ")) * 100)/" + textBox1.Text + ".0 AS '%' FROM " + tabela + " WHERE SORTEIOID BETWEEN " +
+                    //    bola1.ToString() + " AND " + valorFinal.ToString() + " GROUP BY BOLA" + bola.ToString() + " ORDER BY 'QNT' DESC";
+                    //}
 
-                    string cmdSelect = @"SELECT BOLA" + bola.ToString() + " FROM " + tabela + " WHERE SORTEIO BETWEEN " + 
+                    string cmdSelect = @"SELECT BOLA" + bola.ToString() + " FROM " + tabela + " WHERE SORTEIOID BETWEEN " + 
                         Convert.ToInt32(textBoxSorteio1.Text) + " AND " + valorFinal.ToString();
 
                     int[] valores = cadastro.returArray(cmdSelect, "BOLA" + bola.ToString());
@@ -153,7 +153,7 @@ namespace Sena
 
             for(int i=1; i<=6; i++)
             {
-                string cmdSelect = @"SELECT BOLA" + i + " FROM " + tabela + " WHERE SORTEIO BETWEEN " + minimo.ToString() + " AND " + 
+                string cmdSelect = @"SELECT BOLA" + i + " FROM " + tabela + " WHERE SORTEIOID BETWEEN " + minimo.ToString() + " AND " + 
                     textBoxSorteio.Text;
 
                 if (i==1)
@@ -469,7 +469,7 @@ namespace Sena
                 minimo++;
 
                 string cmdSelectTable = @"SELECT " + tabela + ", COUNT(" + tabela + ") AS 'QNT', ((COUNT(" + tabela + ")) * 100)/" + 
-                    minimo.ToString() + ".0 AS '%' FROM " + tabelas + " WHERE SORTEIO BETWEEN " + textBoxSorteio1.Text + " AND " + 
+                    minimo.ToString() + ".0 AS '%' FROM " + tabelas + " WHERE SORTEIOID BETWEEN " + textBoxSorteio1.Text + " AND " + 
                     minimo.ToString() + " GROUP BY " + tabela + " ORDER BY 'QNT' DESC";
 
                 cadastro.listdatagrid(cmdSelectTable, datagrid);
@@ -489,7 +489,7 @@ namespace Sena
 
         private void listaBolasGrid(string tabela)
         {
-            string sorteios = cadastro.returnString(@"SELECT COUNT(SORTEIO) AS QNT FROM " + tabela + "", "QNT");
+            string sorteios = cadastro.returnString(@"SELECT COUNT(SORTEIOID) AS QNT FROM " + tabela + "", "QNT");
             textBoxSorteio.Text = sorteios;
 
             string cmdSelect = @"SELECT TEM.BOLA, COUNT(BOLA) AS QNT, ((COUNT(BOLA) * 100) / " + sorteios + 
@@ -570,7 +570,7 @@ namespace Sena
 
             if (radioButtonDB1.Checked == true)
             {
-                tabela = "MEGASENA";
+                tabela = "megasena";
             }
             else if (radioButtonDB2.Checked == true)
             {
